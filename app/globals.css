@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default Dark Theme (Modern Slate) */
+  --background: #0f172a;
+  /* Slate 900 - Softer than black */
+  --foreground: #f8fafc;
+  /* Slate 50 */
+  --primary: #3b82f6;
+  /* blue-500 */
+  --primary-foreground: #ffffff;
+  --border: #1e293b;
+  /* Slate 800 */
+  --ring: #60a5fa;
+  /* blue-400 */
+
+  /* Text Scaling Base Values */
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-size-xl: 1.5rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+}
+
+/* Skip Navigation Link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #2563eb;
+  /* blue-600 */
+  color: white;
+  padding: 1rem;
+  z-index: 99999;
+  text-decoration: none;
+  font-weight: bold;
+  transition: top 0.2s;
+  width: 100%;
+  text-align: center;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 4px solid #fbbf24;
+  /* yellow-400 */
+}
+
+[data-theme='high-contrast'] {
+  /* High Contrast Theme (Black/White/Yellow) */
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #ffff00;
+  /* Yellow */
+  --primary-foreground: #000000;
+  --border: #ffffff;
+  --ring: #ffff00;
+}
+
+[data-text-size='large'] {
+  --text-base: 1.25rem;
+  --text-lg: 1.5rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+}
+
+[data-text-size='extra-large'] {
+  --text-base: 1.5rem;
+  --text-lg: 1.75rem;
+  --text-xl: 2rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Ensure defaults match dark mode preference */
+    --background: #0f172a;
+    --foreground: #f8fafc;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
