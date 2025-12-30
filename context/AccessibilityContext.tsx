@@ -20,7 +20,8 @@ interface AccessibilityContextType {
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
-    const [theme, setTheme] = useState<Theme>('default');
+    // High contrast mode is the default for accessibility
+    const [theme, setTheme] = useState<Theme>('high-contrast');
     const [textSize, setTextSize] = useState<TextSize>('normal');
     // Enable Screen Reader Optimization (TTS) by default
     const [isScreenReaderOptimized, setScreenReaderOptimized] = useState(true);
