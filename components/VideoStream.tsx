@@ -30,7 +30,8 @@ export default function VideoStream() {
   // TTS throttling refs
   const lastSpeechTimeRef = useRef<number>(0);
   const isSpeakingRef = useRef<boolean>(false);
-  const SPEECH_THROTTLE_MS = 3000;
+  const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const SPEECH_THROTTLE_MS = 2000;
 
   // Audio refs for sound effects
   const connectSound = useRef<HTMLAudioElement | null>(null);
@@ -41,6 +42,20 @@ export default function VideoStream() {
     if (typeof window !== 'undefined') {
       connectSound.current = new Audio('/sounds/connect.mp3'); // Placeholder paths
       disconnectSound.current = new Audio('/sounds/disconnect.mp3');
+
+      // Force load voices
+      const handleVoicesChanged = () => {
+        const voices = window.speechSynthesis.getVoices();
+        console.log(`🎤 Voices loaded: ${voices.length}`);
+      };
+
+      window.speechSynthesis.onvoiceschanged = handleVoicesChanged;
+      // Trigger initially in case they are already loaded
+      handleVoicesChanged();
+
+      return () => {
+        window.speechSynthesis.onvoiceschanged = null;
+      };
     }
   }, []);
 
@@ -153,12 +168,35 @@ export default function VideoStream() {
     const message = `${latestDetection.objectNameEs} ${latestDetection.distanceCategory} a la ${latestDetection.position}`;
     setAnnouncement(message);
 
+    // Debug: Log detection data
+    console.log('🎯 Detection received:', {
+      object: latestDetection.objectNameEs,
+      distanceCategory: latestDetection.distanceCategory,
+      position: latestDetection.position,
+      audioEnabled,
+    });
+
     if (audioEnabled) {
       const now = Date.now();
       const timeSinceLastSpeech = now - lastSpeechTimeRef.current;
-      const isPriority = latestDetection.distanceCategory === 'muy cerca' || latestDetection.distanceCategory === 'cerca';
+
+      // Normalize distance category for comparison (handle both formats)
+      const distCat = latestDetection.distanceCategory?.toLowerCase().trim();
+      const isPriority = distCat === 'muy cerca' || distCat === 'muy_cerca' ||
+        distCat === 'cerca' || distCat === 'close' || distCat === 'very close';
+
+      // Debug: Log TTS decision factors
+      console.log('🔊 TTS Check:', {
+        distanceCategory: distCat,
+        isPriority,
+        timeSinceLastSpeech,
+        throttleMs: SPEECH_THROTTLE_MS,
+        isSpeaking: isSpeakingRef.current,
+        willSpeak: timeSinceLastSpeech >= SPEECH_THROTTLE_MS && !isSpeakingRef.current && isPriority
+      });
 
       if (timeSinceLastSpeech >= SPEECH_THROTTLE_MS && !isSpeakingRef.current && isPriority) {
+        console.log('✅ Speaking:', message);
         speak(message);
         lastSpeechTimeRef.current = now;
       }
@@ -170,15 +208,44 @@ export default function VideoStream() {
     const synth = window.speechSynthesis;
     if (!synth) return;
 
-    if (force) synth.cancel(); // Interrupt if forced (system message)
+    if (force) {
+      synth.cancel(); // Interrupt if forced (system message)
+      isSpeakingRef.current = false;
+      if (currentUtteranceRef.current) {
+        currentUtteranceRef.current = null;
+      }
+    }
+
+    // Prevent overlap if not forced
+    if (isSpeakingRef.current && !force) return;
 
     isSpeakingRef.current = true;
     const utter = new SpeechSynthesisUtterance(message);
     utter.lang = 'es-ES';
     utter.rate = 1.2;
-    utter.onend = () => { isSpeakingRef.current = false; };
-    utter.onerror = () => { isSpeakingRef.current = false; };
+
+    // Store reference to prevent garbage collection which can stop events from firing
+    currentUtteranceRef.current = utter;
+
+    const cleanup = () => {
+      if (currentUtteranceRef.current === utter) {
+        isSpeakingRef.current = false;
+        currentUtteranceRef.current = null;
+      }
+    };
+
+    utter.onend = cleanup;
+    utter.onerror = (e) => {
+      console.error("Speech error", e);
+      cleanup();
+    };
+
     synth.speak(utter);
+
+    // Safety timeout: Reset after 5 seconds just in case onend never fires
+    // This prevents the system from getting "stuck" thinking it's speaking forever
+    setTimeout(cleanup, 5000);
+
   }, [audioEnabled]);
 
   const handleStartDetection = useCallback(async () => {
@@ -330,6 +397,24 @@ export default function VideoStream() {
           {audioEnabled ? <FaVolumeUp /> : <FaVolumeMute />}
           {audioEnabled ? 'Audio On' : 'Audio Off'}
         </button>
+
+        <button
+          onClick={() => speak("Prueba de audio. Uno, dos, tres.", true)}
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          🔊 Prueba de Audio
+        </button>
+      </div>
+
+      {/* Debug Overlay */}
+      <div className="p-2 bg-black/80 text-green-400 font-mono text-xs rounded border border-green-900 mt-2">
+        <p>DEBUG AUDIO:</p>
+        <p>Enabled: {audioEnabled.toString()}</p>
+        <p>Voices Loaded: {window.speechSynthesis?.getVoices().length || 0}</p>
+        <p>Latest Category: {latestDetection ? `"${latestDetection.distanceCategory}"` : 'None'}</p>
+        <p>Is Priority: {latestDetection && (
+          ['muy cerca', 'cerca', 'close', 'very close'].includes(latestDetection.distanceCategory?.toLowerCase().trim())
+        ).toString()}</p>
       </div>
       <div role="status" aria-live="assertive" className="sr-only">
         {announcement}
