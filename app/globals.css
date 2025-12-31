@@ -87,6 +87,125 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--text-base) !important;
+  line-height: 1.5;
+}
+
+/* =====================================================
+   ESCALADO GLOBAL DE TEXTO - Afecta a TODOS los elementos
+   ===================================================== */
+
+/* Forzar tamaño base en todos los elementos de texto */
+html[data-text-size='large'] body,
+html[data-text-size='extra-large'] body {
+  font-size: var(--text-base) !important;
+}
+
+/* Aplicar a TODOS los elementos sin excepción */
+html[data-text-size='large'] p,
+html[data-text-size='large'] span,
+html[data-text-size='large'] div,
+html[data-text-size='large'] li,
+html[data-text-size='large'] label,
+html[data-text-size='large'] button,
+html[data-text-size='large'] a,
+html[data-text-size='large'] input,
+html[data-text-size='large'] select,
+html[data-text-size='large'] textarea,
+html[data-text-size='large'] td,
+html[data-text-size='large'] th {
+  font-size: var(--text-base) !important;
+}
+
+html[data-text-size='extra-large'] p,
+html[data-text-size='extra-large'] span,
+html[data-text-size='extra-large'] div,
+html[data-text-size='extra-large'] li,
+html[data-text-size='extra-large'] label,
+html[data-text-size='extra-large'] button,
+html[data-text-size='extra-large'] a,
+html[data-text-size='extra-large'] input,
+html[data-text-size='extra-large'] select,
+html[data-text-size='extra-large'] textarea,
+html[data-text-size='extra-large'] td,
+html[data-text-size='extra-large'] th {
+  font-size: var(--text-base) !important;
+}
+
+/* Encabezados - siempre escalan */
+h1,
+.text-3xl {
+  font-size: var(--text-3xl) !important;
+}
+
+h2,
+.text-2xl {
+  font-size: var(--text-2xl) !important;
+}
+
+h3,
+.text-xl {
+  font-size: var(--text-xl) !important;
+}
+
+/* Clases de Tailwind - sobreescribir con variables */
+.text-lg {
+  font-size: var(--text-lg) !important;
+}
+
+.text-base {
+  font-size: var(--text-base) !important;
+}
+
+.text-sm {
+  font-size: calc(var(--text-base) * 0.9) !important;
+}
+
+.text-xs {
+  font-size: calc(var(--text-base) * 0.8) !important;
+}
+
+/* Clases de color de texto de Tailwind - también aplicar tamaño */
+[class*="text-gray-"],
+[class*="text-red-"],
+[class*="text-yellow-"],
+[class*="text-green-"],
+[class*="text-blue-"],
+[class*="text-white"] {
+  font-size: var(--text-base) !important;
+}
+
+/* Escalar encabezados con clases de Tailwind */
+html[data-text-size='large'] h1,
+html[data-text-size='extra-large'] h1,
+html[data-text-size='large'] .text-3xl,
+html[data-text-size='extra-large'] .text-3xl {
+  font-size: var(--text-3xl) !important;
+}
+
+html[data-text-size='large'] h2,
+html[data-text-size='extra-large'] h2,
+html[data-text-size='large'] .text-2xl,
+html[data-text-size='extra-large'] .text-2xl {
+  font-size: var(--text-2xl) !important;
+}
+
+html[data-text-size='large'] h3,
+html[data-text-size='extra-large'] h3,
+html[data-text-size='large'] .text-xl,
+html[data-text-size='extra-large'] .text-xl {
+  font-size: var(--text-xl) !important;
+}
+
+/* Textos pequeños también deben escalar proporcionalmente */
+html[data-text-size='large'] .text-sm,
+html[data-text-size='extra-large'] .text-sm {
+  font-size: calc(var(--text-base) * 0.9) !important;
+}
+
+html[data-text-size='large'] .text-xs,
+html[data-text-size='extra-large'] .text-xs {
+  font-size: calc(var(--text-base) * 0.8) !important;
 }
 
 @layer utilities {

@@ -31,7 +31,7 @@ export default function VideoStream() {
   const lastSpeechTimeRef = useRef<number>(0);
   const isSpeakingRef = useRef<boolean>(false);
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const SPEECH_THROTTLE_MS = 2000;
+  const SPEECH_THROTTLE_MS = 1500; // Reduced from 2000ms to 1500ms for more responsive audio
 
   // Audio refs for sound effects
   const connectSound = useRef<HTMLAudioElement | null>(null);
@@ -165,16 +165,10 @@ export default function VideoStream() {
   useEffect(() => {
     if (!latestDetection) return;
 
-    const message = `${latestDetection.objectNameEs} ${latestDetection.distanceCategory} a la ${latestDetection.position}`;
+    // Preposición correcta: "al centro" pero "a la izquierda/derecha"
+    const preposition = latestDetection.position === 'centro' ? 'al' : 'a la';
+    const message = `${latestDetection.objectNameEs} ${latestDetection.distanceCategory} ${preposition} ${latestDetection.position}`;
     setAnnouncement(message);
-
-    // Debug: Log detection data
-    console.log('🎯 Detection received:', {
-      object: latestDetection.objectNameEs,
-      distanceCategory: latestDetection.distanceCategory,
-      position: latestDetection.position,
-      audioEnabled,
-    });
 
     if (audioEnabled) {
       const now = Date.now();
@@ -182,21 +176,11 @@ export default function VideoStream() {
 
       // Normalize distance category for comparison (handle both formats)
       const distCat = latestDetection.distanceCategory?.toLowerCase().trim();
+      // Only alert for very close objects (high priority)
       const isPriority = distCat === 'muy cerca' || distCat === 'muy_cerca' ||
-        distCat === 'cerca' || distCat === 'close' || distCat === 'very close';
-
-      // Debug: Log TTS decision factors
-      console.log('🔊 TTS Check:', {
-        distanceCategory: distCat,
-        isPriority,
-        timeSinceLastSpeech,
-        throttleMs: SPEECH_THROTTLE_MS,
-        isSpeaking: isSpeakingRef.current,
-        willSpeak: timeSinceLastSpeech >= SPEECH_THROTTLE_MS && !isSpeakingRef.current && isPriority
-      });
+        distCat === 'very close';
 
       if (timeSinceLastSpeech >= SPEECH_THROTTLE_MS && !isSpeakingRef.current && isPriority) {
-        console.log('✅ Speaking:', message);
         speak(message);
         lastSpeechTimeRef.current = now;
       }
@@ -311,21 +295,21 @@ export default function VideoStream() {
         </div>
       )}
 
-      {/* Main Content Area */}
-      <div className={`relative rounded-lg overflow-hidden border-2 min-h-[400px] flex flex-col
+      {/* Main Content Area - Altura controlada para que los botones siempre sean visibles */}
+      <div className={`relative rounded-lg overflow-hidden border-2 min-h-[280px] max-h-[60vh] flex flex-col
         ${theme === 'high-contrast' ? 'border-yellow-400 bg-black' : 'border-gray-800 bg-black'}`}>
 
         {textMode ? (
           // TEXT MODE VIEW
-          <div className="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center text-center">
-            <h3 className={`text-2xl font-bold mb-6 ${theme === 'high-contrast' ? 'text-yellow-400' : 'text-white'}`}>
+          <div className="flex-1 p-4 overflow-y-auto flex flex-col items-center justify-center text-center">
+            <h3 className={`text-xl font-bold mb-4 ${theme === 'high-contrast' ? 'text-yellow-400' : 'text-white'}`}>
               Modo Solo Texto
             </h3>
             {detections.length > 0 ? (
-              <ul className="space-y-4 w-full max-w-2xl">
+              <ul className="space-y-3 w-full max-w-2xl">
                 {detections.slice(0, 5).map((det, idx) => (
                   <li key={idx} className={`
-                    p-6 rounded-lg text-2xl font-bold border-2
+                    p-4 rounded-lg text-xl font-bold border-2
                     ${theme === 'high-contrast'
                       ? 'bg-black border-white text-white'
                       : 'bg-gray-800 border-gray-700 text-white'}
@@ -335,7 +319,7 @@ export default function VideoStream() {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-500 text-xl">Esperando detecciones...</p>
+              <p className="text-gray-500 text-lg">Esperando detecciones...</p>
             )}
           </div>
         ) : (
@@ -343,7 +327,7 @@ export default function VideoStream() {
           <>
             <canvas
               ref={canvasRef}
-              className="w-full h-auto max-h-[600px] object-contain mx-auto"
+              className="w-full h-auto max-h-[55vh] object-contain mx-auto"
             />
             {!latestFrame && (
               <div className="absolute inset-0 flex items-center justify-center z-0">
@@ -386,7 +370,12 @@ export default function VideoStream() {
         </button>
 
         <button
-          onClick={() => setAudioEnabled(!audioEnabled)}
+          onClick={() => {
+            const newState = !audioEnabled;
+            setAudioEnabled(newState);
+            // Anunciar el NUEVO estado después del cambio
+            setTimeout(() => speak(`Audio: ${newState ? 'Activado' : 'Desactivado'}`, true), 100);
+          }}
           onFocus={() => speak(`Botón Audio: ${audioEnabled ? 'Activado' : 'Desactivado'}`)}
           className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-colors focus:outline-none focus:ring-4 focus:ring-offset-2 ${audioEnabled
             ? 'bg-purple-600 hover:bg-purple-700 focus:ring-purple-500'
@@ -398,23 +387,6 @@ export default function VideoStream() {
           {audioEnabled ? 'Audio On' : 'Audio Off'}
         </button>
 
-        <button
-          onClick={() => speak("Prueba de audio. Uno, dos, tres.", true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          🔊 Prueba de Audio
-        </button>
-      </div>
-
-      {/* Debug Overlay */}
-      <div className="p-2 bg-black/80 text-green-400 font-mono text-xs rounded border border-green-900 mt-2">
-        <p>DEBUG AUDIO:</p>
-        <p>Enabled: {audioEnabled.toString()}</p>
-        <p>Voices Loaded: {window.speechSynthesis?.getVoices().length || 0}</p>
-        <p>Latest Category: {latestDetection ? `"${latestDetection.distanceCategory}"` : 'None'}</p>
-        <p>Is Priority: {latestDetection && (
-          ['muy cerca', 'cerca', 'close', 'very close'].includes(latestDetection.distanceCategory?.toLowerCase().trim())
-        ).toString()}</p>
       </div>
       <div role="status" aria-live="assertive" className="sr-only">
         {announcement}

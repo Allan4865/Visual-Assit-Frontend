@@ -176,18 +176,7 @@ export default function CameraSelector() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Seleccionar Cámara</h2>
-        <button
-          onClick={handleDiscover}
-          onFocus={() => speak("Botón Descubrir Cámaras")}
-          disabled={isDiscovering}
-          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-          aria-busy={isDiscovering}
-        >
-          {isDiscovering ? 'Descubriendo...' : 'Descubrir Cámaras'}
-        </button>
-      </div>
+      <h2 className="text-xl font-semibold">Seleccionar Cámara</h2>
 
       {/* Error display */}
       {error && (
@@ -198,52 +187,78 @@ export default function CameraSelector() {
 
       {/* Camera list */}
       {availableCameras.length > 0 ? (
-        <div className="grid gap-2" role="list" aria-label="Lista de cámaras disponibles">
-          {availableCameras.map((camera) => (
-            <div
-              key={camera.id}
-              role="listitem"
-              tabIndex={0}
-              className={`p-3 rounded-md border-2 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 ${selectedCamera?.id === camera.id
-                ? 'border-blue-500 bg-blue-900/30'
-                : 'border-gray-700 bg-gray-800 hover:border-gray-600'
-                }`}
-              onClick={() => setSelectedCamera(camera)}
-              onFocus={() => speak(`Cámara: ${camera.name}. ${selectedCamera?.id === camera.id ? 'Seleccionada' : 'No seleccionada'}`)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setSelectedCamera(camera);
-                }
-              }}
-              aria-selected={selectedCamera?.id === camera.id}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">{camera.name}</div>
-                  <div className="text-sm text-gray-400">
-                    Dispositivo {camera.device_index}
-                    {camera.location && ` • ${camera.location}`}
+        <>
+          <div className="grid gap-2" role="list" aria-label="Lista de cámaras disponibles">
+            {availableCameras.map((camera) => (
+              <div
+                key={camera.id}
+                role="listitem"
+                tabIndex={0}
+                className={`p-3 rounded-md border-2 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 ${selectedCamera?.id === camera.id
+                  ? 'border-blue-500 bg-blue-900/30'
+                  : 'border-gray-700 bg-gray-800 hover:border-gray-600'
+                  }`}
+                onClick={() => setSelectedCamera(camera)}
+                onFocus={() => speak(`Cámara: ${camera.name}. ${selectedCamera?.id === camera.id ? 'Seleccionada' : 'No seleccionada'}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedCamera(camera);
+                  }
+                }}
+                aria-selected={selectedCamera?.id === camera.id}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">{camera.name}</div>
+                    <div className="text-sm text-gray-400">
+                      Dispositivo {camera.device_index}
+                      {camera.location && ` • ${camera.location}`}
+                    </div>
                   </div>
+                  <button
+                    onClick={(e) => confirmDelete(e, camera)}
+                    onFocus={(e) => {
+                      e.stopPropagation();
+                      speak(`Eliminar cámara ${camera.name}`);
+                    }}
+                    className="px-2 py-1 text-sm text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
+                    aria-label={`Eliminar cámara ${camera.name}`}
+                  >
+                    Eliminar
+                  </button>
                 </div>
-                <button
-                  onClick={(e) => confirmDelete(e, camera)}
-                  onFocus={(e) => {
-                    e.stopPropagation();
-                    speak(`Eliminar cámara ${camera.name}`);
-                  }}
-                  className="px-2 py-1 text-sm text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
-                  aria-label={`Eliminar cámara ${camera.name}`}
-                >
-                  Eliminar
-                </button>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+
+          {/* Discover button - shown below camera list when cameras exist */}
+          <button
+            onClick={handleDiscover}
+            onFocus={() => speak("Botón Descubrir Cámaras")}
+            disabled={isDiscovering}
+            className="w-full px-3 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+            aria-busy={isDiscovering}
+          >
+            {isDiscovering ? 'Descubriendo...' : '+ Agregar otra cámara'}
+          </button>
+        </>
       ) : (
-        <div className="p-4 bg-gray-800 rounded-md text-gray-400 text-center">
-          {isLoading ? 'Cargando cámaras...' : 'No hay cámaras configuradas. Descubre cámaras para agregar una.'}
+        <div className="p-4 bg-gray-800 rounded-md text-center space-y-3">
+          <p className="text-gray-400">
+            {isLoading ? 'Cargando cámaras...' : 'No hay cámaras configuradas.'}
+          </p>
+          {!isLoading && (
+            <button
+              onClick={handleDiscover}
+              onFocus={() => speak("Botón Descubrir Cámaras")}
+              disabled={isDiscovering}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+              aria-busy={isDiscovering}
+            >
+              {isDiscovering ? 'Descubriendo...' : 'Descubrir Cámaras'}
+            </button>
+          )}
         </div>
       )}
 

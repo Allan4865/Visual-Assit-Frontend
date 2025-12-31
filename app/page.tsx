@@ -26,17 +26,17 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Main content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Sidebar - Camera Selector */}
+      {/* Main content grid - Sidebar más compacto, video más grande */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 w-full">
+        {/* Sidebar - Camera Selector (1 de 5 columnas) */}
         <div className="lg:col-span-1">
           <div className="sticky top-4 z-50">
             <CameraSelector />
           </div>
         </div>
 
-        {/* Main content - Video Stream */}
-        <div className="lg:col-span-2">
+        {/* Main content - Video Stream (4 de 5 columnas) */}
+        <div className="lg:col-span-4">
           <VideoStream />
         </div>
       </div>

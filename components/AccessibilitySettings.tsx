@@ -71,7 +71,12 @@ export default function AccessibilitySettings() {
                         <div className="flex items-center justify-between">
                             <span className="font-medium">Alto Contraste</span>
                             <button
-                                onClick={toggleTheme}
+                                onClick={() => {
+                                    toggleTheme();
+                                    // Anunciar el NUEVO estado después del cambio
+                                    const newState = theme === 'high-contrast' ? 'Desactivado' : 'Activado';
+                                    setTimeout(() => speak(`Alto Contraste: ${newState}`), 100);
+                                }}
                                 onFocus={() => speak(`Alto Contraste: ${theme === 'high-contrast' ? 'Activado' : 'Desactivado'}`)}
                                 className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-offset-2 ${theme === 'high-contrast'
                                     ? 'bg-yellow-400 focus:ring-yellow-400'
@@ -88,10 +93,15 @@ export default function AccessibilitySettings() {
                         <div className="flex items-center justify-between">
                             <span className="font-medium">Tamaño de Texto</span>
                             <button
-                                onClick={cycleTextSize}
-                                onFocus={() => speak(`Tamaño de texto: ${textSize === 'normal' ? 'Normal' : textSize === 'large' ? 'Grande' : 'Extra Grande'}`)}
+                                onClick={() => {
+                                    cycleTextSize();
+                                    // Anunciar el NUEVO tamaño después del cambio
+                                    const newSize = textSize === 'normal' ? 'Grande' : textSize === 'large' ? 'Extra Grande' : 'Normal';
+                                    setTimeout(() => speak(`Tamaño de texto: ${newSize}`), 100);
+                                }}
+                                onFocus={() => speak(`Tamaño de texto actual: ${textSize === 'normal' ? 'Normal' : textSize === 'large' ? 'Grande' : 'Extra Grande'}`)}
                                 className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                aria-label={`Cambiar tamaño de texto. Actual: ${textSize}`}
+                                aria-label={`Cambiar tamaño de texto. Actual: ${textSize === 'normal' ? 'Normal' : textSize === 'large' ? 'Grande' : 'Extra Grande'}`}
                             >
                                 {textSize === 'normal' ? 'Normal' : textSize === 'large' ? 'Grande' : 'Extra'}
                             </button>
