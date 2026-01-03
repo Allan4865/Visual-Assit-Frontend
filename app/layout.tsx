@@ -11,6 +11,7 @@ import './globals.css';
 import { SessionProvider } from '@/context/SessionContext';
 import { AccessibilityProvider } from '@/context/AccessibilityContext';
 import AccessibilitySettings from '@/components/AccessibilitySettings';
+import SkipLink from '@/components/SkipLink';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -19,10 +20,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <title>Sistema de Asistencia Visual</title>
       </head>
       <body className="bg-slate-900 text-gray-100 min-h-screen transition-colors duration-200">
-        <a href="#main-content" className="skip-link">
-          Saltar al contenido principal
-        </a>
         <AccessibilityProvider>
+          <SkipLink />
           <SessionProvider>
             {children}
             <AccessibilitySettings />

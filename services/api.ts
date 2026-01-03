@@ -5,9 +5,33 @@ export interface Camera {
   id: number;
   user_id: number;
   name: string;
-  device_index: number;
+  camera_type: 'local' | 'rtsp';
+  device_index?: number;      // Solo para cámaras locales
+  rtsp_url?: string;          // Solo para cámaras RTSP
+  has_credentials?: boolean;  // Indica si la cámara RTSP tiene credenciales
   location?: string;
   created_at: string;
+}
+
+export interface CreateRtspCameraData {
+  user_id: number;
+  name: string;
+  rtsp_url: string;
+  rtsp_username?: string;
+  rtsp_password?: string;
+  location?: string;
+}
+
+export interface RtspTestResult {
+  success: boolean;
+  message: string;
+  resolution: [number, number] | null;
+}
+
+export interface RtspValidationResult {
+  valid: boolean;
+  url: string;
+  message: string;
 }
 
 export interface Session {
@@ -164,6 +188,42 @@ class ApiClient {
 
   async getCameraStats(id: number): Promise<any> {
     const response = await this.client.get(`/cameras/${id}/stats`);
+    return response.data;
+  }
+
+  // ==================== RTSP CAMERA ENDPOINTS ====================
+
+  async createRtspCamera(data: CreateRtspCameraData): Promise<Camera> {
+    const response = await this.client.post<Camera>('/cameras/rtsp', data);
+    return response.data;
+  }
+
+  async testRtspConnection(
+    rtspUrl: string,
+    username?: string,
+    password?: string
+  ): Promise<RtspTestResult> {
+    const response = await this.client.post<RtspTestResult>(
+      '/cameras/rtsp/test',
+      {
+        rtsp_url: rtspUrl,
+        rtsp_username: username,
+        rtsp_password: password,
+      },
+      {
+        timeout: 30000, // 30 segundos para prueba de conexión
+      }
+    );
+    return response.data;
+  }
+
+  async validateRtspUrl(url: string): Promise<RtspValidationResult> {
+    const response = await this.client.get<RtspValidationResult>(
+      `/cameras/rtsp/validate`,
+      {
+        params: { url },
+      }
+    );
     return response.data;
   }
 

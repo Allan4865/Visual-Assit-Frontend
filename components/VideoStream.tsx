@@ -25,7 +25,7 @@ export default function VideoStream() {
   const [isDetectionRunning, setIsDetectionRunning] = useState(false);
   const [textMode, setTextMode] = useState(false);
 
-  const { theme } = useAccessibility();
+  const { theme, isScreenReaderOptimized } = useAccessibility();
 
   // TTS throttling refs
   const lastSpeechTimeRef = useRef<number>(0);
@@ -36,6 +36,9 @@ export default function VideoStream() {
   // Audio refs for sound effects
   const connectSound = useRef<HTMLAudioElement | null>(null);
   const disconnectSound = useRef<HTMLAudioElement | null>(null);
+
+  // Refs for video control buttons (for arrow key navigation)
+  const controlButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Initialize sound effects
   useEffect(() => {
@@ -104,6 +107,13 @@ export default function VideoStream() {
         e.target instanceof HTMLTextAreaElement ||
         e.target instanceof HTMLButtonElement
       ) return;
+
+      // Ignore if focus is on accessibility navigation elements (listbox, radiogroup, etc.)
+      const target = e.target as HTMLElement;
+      const role = target?.getAttribute?.('role');
+      if (role === 'listbox' || role === 'option' || role === 'radiogroup' || role === 'radio') {
+        return;
+      }
 
       switch (e.key.toLowerCase()) {
         case ' ': // Space: Toggle Detection
@@ -190,7 +200,9 @@ export default function VideoStream() {
   }, [latestDetection, audioEnabled]); // speak is stable via useCallback
 
   const speak = useCallback((message: string, force = false) => {
+    // Respect the global accessibility setting for screen reader optimization
     if (typeof window === 'undefined' || (!audioEnabled && !force)) return;
+    if (!isScreenReaderOptimized && !force) return; // Don't speak if voice alerts are disabled
     const synth = window.speechSynthesis;
     if (!synth) return;
 
@@ -232,7 +244,7 @@ export default function VideoStream() {
     // This prevents the system from getting "stuck" thinking it's speaking forever
     setTimeout(cleanup, 5000);
 
-  }, [audioEnabled]);
+  }, [audioEnabled, isScreenReaderOptimized]);
 
   const handleStartDetection = useCallback(async () => {
     if (!selectedCamera) {
@@ -289,6 +301,8 @@ export default function VideoStream() {
           <span>[Espacio] Iniciar/Parar</span>
           <span>[M] Audio</span>
           <span>[T] Modo Texto</span>
+          <span>[C] Cámaras</span>
+          <span>[D] Descubrir</span>
           <span>[A] Accesibilidad</span>
         </div>
       </div>
@@ -351,10 +365,31 @@ export default function VideoStream() {
 
       {/* Controls Bar */}
       {/* Controls */}
-      <div className="mt-4 flex flex-wrap gap-4 justify-center">
+      <div
+        className="mt-4 flex flex-wrap gap-4 justify-center"
+        role="toolbar"
+        aria-label="Controles de video"
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const buttons = controlButtonRefs.current.filter(Boolean) as HTMLButtonElement[];
+            const currentIndex = buttons.findIndex(btn => btn === document.activeElement);
+            if (currentIndex === -1) return;
+
+            let nextIndex: number;
+            if (e.key === 'ArrowRight') {
+              nextIndex = (currentIndex + 1) % buttons.length;
+            } else {
+              nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+            }
+            buttons[nextIndex]?.focus();
+          }
+        }}
+      >
         <button
+          ref={(el) => { controlButtonRefs.current[0] = el; }}
           onClick={isDetectionRunning ? handleStopDetection : handleStartDetection}
-          onFocus={() => speak(isDetectionRunning ? "Botón Detener detección" : "Botón Iniciar detección")}
+          onFocus={() => speak(isDetectionRunning ? "Botón Detener detección. Usa flechas izquierda y derecha para navegar" : "Botón Iniciar detección. Usa flechas izquierda y derecha para navegar")}
           className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-colors focus:outline-none focus:ring-4 focus:ring-offset-2 ${isDetectionRunning
             ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
             : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
@@ -366,6 +401,7 @@ export default function VideoStream() {
         </button>
 
         <button
+          ref={(el) => { controlButtonRefs.current[1] = el; }}
           onClick={() => setTextMode(!textMode)}
           onFocus={() => speak(`Botón Modo Texto: ${textMode ? 'Activado' : 'Desactivado'}`)}
           className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-colors focus:outline-none focus:ring-4 focus:ring-offset-2 ${textMode
@@ -379,6 +415,7 @@ export default function VideoStream() {
         </button>
 
         <button
+          ref={(el) => { controlButtonRefs.current[2] = el; }}
           onClick={() => {
             const newState = !audioEnabled;
             setAudioEnabled(newState);

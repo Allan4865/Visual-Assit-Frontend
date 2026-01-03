@@ -42,20 +42,15 @@ export default function HomePage() {
       </div>
 
       {/* Footer info */}
-      <div className="mt-8 p-4 bg-gray-800 rounded-md border border-gray-700">
+      <div id="instrucciones-uso" tabIndex={-1} className="mt-8 p-4 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
         <h3 className="font-semibold mb-2">Instrucciones de Uso</h3>
-        <ol className="list-decimal list-inside space-y-1 text-sm text-gray-300">
-          <li>Descubre y selecciona una cámara usando el panel lateral</li>
-          <li>Presiona "Iniciar Detección" para comenzar el análisis en tiempo real</li>
-          <li>Las detecciones se mostrarán con códigos de color según su prioridad:
-            <ul className="list-disc list-inside ml-6 mt-1">
-              <li className="text-red-400">Rojo: Prioridad muy alta (objetos muy cerca o en el centro)</li>
-              <li className="text-yellow-400">Amarillo: Prioridad media (objetos cerca)</li>
-              <li className="text-gray-400">Gris: Prioridad baja (objetos lejanos)</li>
-            </ul>
-          </li>
-          <li>Activa el audio para recibir alertas vocales en español</li>
-          <li>Presiona "Detener Detección" para finalizar la sesión</li>
+        <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
+          <li><strong>Selecciona una cámara:</strong> Presiona <kbd className="px-1 bg-gray-700 rounded">C</kbd> para ir a la lista de cámaras. Usa las flechas ↑↓ para navegar y <kbd className="px-1 bg-gray-700 rounded">Enter</kbd> para seleccionar.</li>
+          <li><strong>Agregar cámara:</strong> Presiona <kbd className="px-1 bg-gray-700 rounded">D</kbd> para ir a los botones de descubrir. Puedes agregar cámaras locales o remotas (RTSP).</li>
+          <li><strong>Iniciar detección:</strong> Con una cámara seleccionada, presiona <kbd className="px-1 bg-gray-700 rounded">Espacio</kbd> o <kbd className="px-1 bg-gray-700 rounded">Enter</kbd> para iniciar/detener la detección de objetos.</li>
+          <li><strong>Alertas de voz:</strong> El sistema anuncia los objetos detectados y su distancia aproximada (cerca, lejos, muy cerca). Usa <kbd className="px-1 bg-gray-700 rounded">M</kbd> para silenciar/activar el audio de detecciones.</li>
+          <li><strong>Modo texto:</strong> Presiona <kbd className="px-1 bg-gray-700 rounded">T</kbd> para alternar entre video y lista de texto de detecciones.</li>
+          <li><strong>Accesibilidad:</strong> Presiona <kbd className="px-1 bg-gray-700 rounded">A</kbd> para abrir el panel de accesibilidad donde puedes activar alto contraste, cambiar tamaño de texto, y activar/desactivar alertas por voz.</li>
         </ol>
       </div>
     </main>

@@ -142,18 +142,20 @@ export default function AccessibilitySettings() {
                                 onClick={() => {
                                     const newState = !isScreenReaderOptimized;
                                     setScreenReaderOptimized(newState);
-                                    // Force speak even if disabling, to confirm action
-                                    if (!newState) {
-                                        const synth = window.speechSynthesis;
-                                        const utter = new SpeechSynthesisUtterance("Modo accesibilidad desactivado");
-                                        utter.lang = 'es-ES';
-                                        synth.speak(utter);
-                                    } else {
-                                        speak("Modo accesibilidad activado");
-                                    }
+                                    // Use speechSynthesis directly since state hasn't updated yet
+                                    const synth = window.speechSynthesis;
+                                    synth.cancel(); // Cancel any pending speech first
+                                    const message = newState
+                                        ? "Alertas por voz activadas"
+                                        : "Alertas por voz desactivadas";
+                                    const utter = new SpeechSynthesisUtterance(message);
+                                    utter.lang = 'es-ES';
+                                    utter.rate = 1.2;
+                                    synth.speak(utter);
                                 }}
                                 onFocus={() => {
-                                    if (isScreenReaderOptimized) speak("Modo Accesibilidad con Voz: Activado");
+                                    // No anunciar al hacer foco para evitar doble anuncio con onClick
+                                    // El estado se anuncia al hacer clic
                                 }}
                                 className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-offset-2 ${isScreenReaderOptimized
                                     ? 'bg-green-500 focus:ring-green-400'
