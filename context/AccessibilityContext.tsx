@@ -56,19 +56,21 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
         });
     };
 
+    // Implementación de la función speak en AccessibilityContext.tsx
     const speak = (message: string, interrupt = true) => {
-        // If optimization is disabled, do not speak
+        // Si la optimización está desactivada, no hablar
         if (!isScreenReaderOptimized) return;
-
         if (typeof window === 'undefined') return;
+
         const synth = window.speechSynthesis;
         if (!synth) return;
 
+        // Evitar solapamientos interrumpiendo mensaje anterior
         if (interrupt) synth.cancel();
 
         const utter = new SpeechSynthesisUtterance(message);
-        utter.lang = 'es-ES';
-        utter.rate = 1.2;
+        utter.lang = 'es-ES'; // Configuración de idioma español
+        utter.rate = 1.2;     // Velocidad ligeramente superior
         synth.speak(utter);
     };
 

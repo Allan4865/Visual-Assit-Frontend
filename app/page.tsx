@@ -21,8 +21,8 @@ export default function HomePage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Sistema de Asistencia Visual</h1>
         <p className="text-gray-400">
-          Sistema de detección de objetos en tiempo real usando YOLOv8 y estimación de profundidad con MiDaS.
-          Proporciona asistencia visual mediante retroalimentación auditiva para personas con discapacidad visual.
+          Sistema de asistencia visual para entornos de oficina. Detecta objetos en tiempo real usando YOLOv8
+          y estimación de profundidad con MiDaS, proporcionando retroalimentación auditiva para personas con discapacidad visual.
         </p>
       </div>
 

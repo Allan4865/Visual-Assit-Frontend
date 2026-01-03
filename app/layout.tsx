@@ -14,7 +14,7 @@ import AccessibilitySettings from '@/components/AccessibilitySettings';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <title>Sistema de Asistencia Visual</title>
       </head>

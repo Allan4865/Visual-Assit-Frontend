@@ -125,7 +125,8 @@ export default function VideoStream() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isDetectionRunning, audioEnabled, textMode]); // Dependencies for handlers
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDetectionRunning, audioEnabled, textMode]); // Handlers defined below use these states
 
   // Process detections from latest frame (Always run, regardless of view mode)
   useEffect(() => {
@@ -150,12 +151,12 @@ export default function VideoStream() {
 
       // Draw High Contrast Overlays if enabled
       if (theme === 'high-contrast' && detections.length > 0) {
-        // Draw HUD overlay
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(0, 0, canvas.width, 40);
-        ctx.font = 'bold 24px Arial';
-        ctx.fillStyle = '#FFFF00';
-        ctx.fillText(`Objetos: ${detections.length}`, 10, 30);
+        // Draw HUD overlay - REMOVED text overlay as per request
+        // ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        // ctx.fillRect(0, 0, canvas.width, 40);
+        // ctx.font = 'bold 24px Arial';
+        // ctx.fillStyle = '#FFFF00';
+        // ctx.fillText(`Objetos: ${detections.length}`, 10, 30);
       }
     };
     img.src = `data:image/jpeg;base64,${latestFrame.frame}`;
@@ -185,7 +186,8 @@ export default function VideoStream() {
         lastSpeechTimeRef.current = now;
       }
     }
-  }, [latestDetection, audioEnabled, SPEECH_THROTTLE_MS]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestDetection, audioEnabled]); // speak is stable via useCallback
 
   const speak = useCallback((message: string, force = false) => {
     if (typeof window === 'undefined' || (!audioEnabled && !force)) return;
@@ -219,8 +221,8 @@ export default function VideoStream() {
     };
 
     utter.onend = cleanup;
-    utter.onerror = (e) => {
-      console.error("Speech error", e);
+    utter.onerror = () => {
+      // Silenciar errores de speech - son normales cuando se interrumpe
       cleanup();
     };
 
@@ -282,10 +284,12 @@ export default function VideoStream() {
         </div>
 
         {/* Keyboard Hints */}
-        <div className="hidden md:flex gap-3 text-xs text-gray-500">
+        <div className={`hidden md:flex gap-3 text-xs font-bold ${theme === 'high-contrast' ? 'text-yellow-400' : 'text-yellow-500' // Increased visibility
+          }`}>
           <span>[Espacio] Iniciar/Parar</span>
           <span>[M] Audio</span>
           <span>[T] Modo Texto</span>
+          <span>[A] Accesibilidad</span>
         </div>
       </div>
 
@@ -295,13 +299,17 @@ export default function VideoStream() {
         </div>
       )}
 
-      {/* Main Content Area - Altura controlada para que los botones siempre sean visibles */}
-      <div className={`relative rounded-lg overflow-hidden border-2 min-h-[280px] max-h-[60vh] flex flex-col
-        ${theme === 'high-contrast' ? 'border-yellow-400 bg-black' : 'border-gray-800 bg-black'}`}>
-
+      {/* Main Content Area - Contenedor dinámico */}
+      <div
+        className={`relative rounded-lg overflow-hidden border-2 mx-auto flex flex-col items-center justify-center
+          ${theme === 'high-contrast' ? 'border-yellow-400 bg-black' : 'border-gray-800 bg-black'}
+          ${(!textMode && isDetectionRunning && latestFrame) ? 'w-fit' : 'w-full'}
+        `}
+        style={{ maxHeight: '65vh' }}
+      >
         {textMode ? (
           // TEXT MODE VIEW
-          <div className="flex-1 p-4 overflow-y-auto flex flex-col items-center justify-center text-center">
+          <div className="p-4 overflow-y-auto flex flex-col items-center justify-center text-center min-h-[300px] w-full">
             <h3 className={`text-xl font-bold mb-4 ${theme === 'high-contrast' ? 'text-yellow-400' : 'text-white'}`}>
               Modo Solo Texto
             </h3>
@@ -325,14 +333,15 @@ export default function VideoStream() {
         ) : (
           // VIDEO MODE VIEW
           <>
-            <canvas
-              ref={canvasRef}
-              className="w-full h-auto max-h-[55vh] object-contain mx-auto"
-            />
-            {!latestFrame && (
-              <div className="absolute inset-0 flex items-center justify-center z-0">
+            {isDetectionRunning && latestFrame ? (
+              <canvas
+                ref={canvasRef}
+                className="max-w-full max-h-[65vh] block object-contain"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full aspect-video min-h-[300px] bg-black text-center p-4">
                 <p className={`text-xl ${theme === 'high-contrast' ? 'text-yellow-400' : 'text-gray-400'}`}>
-                  {isDetectionRunning ? 'Esperando video...' : 'Presiona [Espacio] para iniciar'}
+                  {isDetectionRunning ? 'Esperando conexión...' : 'Presiona [Espacio] para iniciar'}
                 </p>
               </div>
             )}

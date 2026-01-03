@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccessibility } from '@/context/AccessibilityContext';
 
 export default function AccessibilitySettings() {
@@ -14,6 +14,32 @@ export default function AccessibilitySettings() {
         speak
     } = useAccessibility();
     const [isOpen, setIsOpen] = useState(false);
+
+    // Keyboard shortcut for accessibility panel
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ignore if typing in an input
+            if (
+                e.target instanceof HTMLInputElement ||
+                e.target instanceof HTMLTextAreaElement
+            ) return;
+
+            if (e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                setIsOpen(prev => {
+                    const newState = !prev;
+                    const message = newState
+                        ? "Panel de accesibilidad abierto"
+                        : "Panel de accesibilidad cerrado";
+                    speak(message, true);
+                    return newState;
+                });
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [speak]);
 
     return (
         <div className="fixed bottom-4 right-4 z-[10000]">
