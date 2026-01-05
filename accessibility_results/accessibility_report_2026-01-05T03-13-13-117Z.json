@@ -1,0 +1,637 @@
+{
+  "timestamp": "2026-01-05T03:13:08.280Z",
+  "url": "http://localhost:3000",
+  "summary": {
+    "total_violations": 0,
+    "total_passes": 39,
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0
+  },
+  "violations": [],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "description": "Ensures an element's role supports its ARIA attributes",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 14
+    },
+    {
+      "id": "aria-allowed-role",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "tags": [
+        "cat.aria",
+        "best-practice"
+      ],
+      "nodes_count": 8
+    },
+    {
+      "id": "aria-conditional-attr",
+      "description": "Ensures ARIA attributes are used as described in the specification of the element's role",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 14
+    },
+    {
+      "id": "aria-deprecated-role",
+      "description": "Ensures elements do not use deprecated roles",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 8
+    },
+    {
+      "id": "aria-hidden-body",
+      "description": "Ensures aria-hidden=\"true\" is not present on the document body.",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "description": "Ensures aria-hidden elements are not focusable nor contain focusable elements",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag412",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "aria-input-field-name",
+      "description": "Ensures every ARIA input field has an accessible name",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "description": "Ensures ARIA attributes are not prohibited for an element's role",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 14
+    },
+    {
+      "id": "aria-required-attr",
+      "description": "Ensures elements with ARIA roles have all required ARIA attributes",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 8
+    },
+    {
+      "id": "aria-required-children",
+      "description": "Ensures elements with an ARIA role that require child roles contain them",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag131",
+        "EN-301-549",
+        "EN-9.1.3.1"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "aria-required-parent",
+      "description": "Ensures elements with an ARIA role that require parent roles are contained by them",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag131",
+        "EN-301-549",
+        "EN-9.1.3.1"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "aria-roles",
+      "description": "Ensures all elements with a role attribute use a valid value",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 8
+    },
+    {
+      "id": "aria-toggle-field-name",
+      "description": "Ensures every ARIA toggle field has an accessible name",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "description": "Ensures all ARIA attributes have valid values",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 14
+    },
+    {
+      "id": "aria-valid-attr",
+      "description": "Ensures attributes that begin with aria- are valid ARIA attributes",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 14
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "description": "Ensure that text spacing set through style attributes can be adjusted with custom stylesheets",
+      "tags": [
+        "cat.structure",
+        "wcag21aa",
+        "wcag1412",
+        "EN-301-549",
+        "EN-9.1.4.12",
+        "ACT"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "button-name",
+      "description": "Ensures buttons have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT"
+      ],
+      "nodes_count": 8
+    },
+    {
+      "id": "bypass",
+      "description": "Ensures each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+      "tags": [
+        "cat.keyboard",
+        "wcag2a",
+        "wcag241",
+        "section508",
+        "section508.22.o",
+        "TTv5",
+        "TT9.a",
+        "EN-301-549",
+        "EN-9.2.4.1"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "color-contrast",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ],
+      "nodes_count": 47
+    },
+    {
+      "id": "document-title",
+      "description": "Ensures each HTML document contains a non-empty <title> element",
+      "tags": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag242",
+        "TTv5",
+        "TT12.a",
+        "EN-301-549",
+        "EN-9.2.4.2",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "description": "Ensures every id attribute value used in ARIA and in labels is unique",
+      "tags": [
+        "cat.parsing",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "empty-heading",
+      "description": "Ensures headings have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "best-practice"
+      ],
+      "nodes_count": 3
+    },
+    {
+      "id": "heading-order",
+      "description": "Ensures the order of headings is semantically correct",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 3
+    },
+    {
+      "id": "html-has-lang",
+      "description": "Ensures every HTML document has a lang attribute",
+      "tags": [
+        "cat.language",
+        "wcag2a",
+        "wcag311",
+        "TTv5",
+        "TT11.a",
+        "EN-301-549",
+        "EN-9.3.1.1",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "description": "Ensures the lang attribute of the <html> element has a valid value",
+      "tags": [
+        "cat.language",
+        "wcag2a",
+        "wcag311",
+        "TTv5",
+        "TT11.a",
+        "EN-301-549",
+        "EN-9.3.1.1",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "description": "Ensures the main landmark is at top level",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "description": "Ensures the document has at most one main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "description": "Ensures the document has a main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "landmark-unique",
+      "description": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 2
+    },
+    {
+      "id": "link-name",
+      "description": "Ensures links have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag244",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.2.4.4",
+        "EN-9.4.1.2",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "list",
+      "description": "Ensures that lists are structured correctly",
+      "tags": [
+        "cat.structure",
+        "wcag2a",
+        "wcag131",
+        "EN-301-549",
+        "EN-9.1.3.1"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "listitem",
+      "description": "Ensures <li> elements are used semantically",
+      "tags": [
+        "cat.structure",
+        "wcag2a",
+        "wcag131",
+        "EN-301-549",
+        "EN-9.1.3.1"
+      ],
+      "nodes_count": 6
+    },
+    {
+      "id": "meta-viewport-large",
+      "description": "Ensures <meta name=\"viewport\"> can scale a significant amount",
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "meta-viewport",
+      "description": "Ensures <meta name=\"viewport\"> does not disable text scaling and zooming",
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "wcag2aa",
+        "wcag144",
+        "EN-301-549",
+        "EN-9.1.4.4",
+        "ACT"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "nested-interactive",
+      "description": "Ensures interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+      "tags": [
+        "cat.keyboard",
+        "wcag2a",
+        "wcag412",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.4.1.2"
+      ],
+      "nodes_count": 10
+    },
+    {
+      "id": "page-has-heading-one",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "region",
+      "description": "Ensures all page content is contained by landmarks",
+      "tags": [
+        "cat.keyboard",
+        "best-practice"
+      ],
+      "nodes_count": 95
+    },
+    {
+      "id": "skip-link",
+      "description": "Ensure all skip links have a focusable target",
+      "tags": [
+        "cat.keyboard",
+        "best-practice"
+      ],
+      "nodes_count": 1
+    },
+    {
+      "id": "tabindex",
+      "description": "Ensures tabindex attribute values are not greater than 0",
+      "tags": [
+        "cat.keyboard",
+        "best-practice"
+      ],
+      "nodes_count": 3
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ]
+    }
+  ],
+  "manual_checks": [
+    {
+      "category": "Navegación por teclado",
+      "checks": [
+        "Todos los elementos interactivos son accesibles con Tab",
+        "El orden de tabulación es lógico",
+        "No hay trampas de teclado",
+        "Los modales atrapan el foco correctamente",
+        "Esc cierra modales y menús"
+      ]
+    },
+    {
+      "category": "Lector de pantalla (NVDA/VoiceOver)",
+      "checks": [
+        "Los encabezados describen correctamente las secciones",
+        "Las imágenes tienen descripciones alt significativas",
+        "Los botones tienen nombres accesibles",
+        "Los formularios tienen etiquetas asociadas",
+        "Las alertas de audio se anuncian correctamente",
+        "El estado de detección se comunica claramente"
+      ]
+    },
+    {
+      "category": "Contenido multimedia",
+      "checks": [
+        "Las alertas de audio tienen volumen adecuado",
+        "La síntesis de voz es clara y comprensible",
+        "El usuario puede pausar/detener el audio",
+        "Hay alternativas de texto para información visual"
+      ]
+    },
+    {
+      "category": "Contraste y visualización",
+      "checks": [
+        "El texto es legible con diferentes tamaños de fuente",
+        "Los colores de alerta son distinguibles",
+        "El modo de alto contraste funciona correctamente",
+        "La interfaz es usable con zoom 200%"
+      ]
+    }
+  ],
+  "keyboard_navigation": {
+    "skip_link_works": false,
+    "focusable_elements": 10,
+    "focus_visible": true,
+    "tab_order_logical": true,
+    "all_interactive_focusable": true,
+    "focus_trap_modals": "N/A",
+    "issues": [
+      "Skip link no es el primer elemento enfocable"
+    ]
+  },
+  "color_contrast": {
+    "text_elements_checked": 0,
+    "issues": [],
+    "passed": true,
+    "sample_colors": [
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(0, 0, 0)"
+      },
+      {
+        "color": "rgb(255, 255, 0)",
+        "bg": "rgb(37, 99, 235)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgba(30, 58, 138, 0.3)"
+      },
+      {
+        "color": "rgb(0, 0, 0)",
+        "bg": "rgb(255, 255, 0)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(0, 0, 0)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(0, 0, 0)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(0, 0, 0)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(126, 34, 206)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgba(17, 24, 39, 0.5)"
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(34, 197, 94)"
+      }
+    ]
+  },
+  "screen_reader": {
+    "has_lang": true,
+    "has_title": true,
+    "has_main_landmark": true,
+    "has_h1": true,
+    "heading_hierarchy": [
+      {
+        "level": 1,
+        "text": "Sistema de Asistencia Visual"
+      },
+      {
+        "level": 2,
+        "text": "Seleccionar Cámara"
+      },
+      {
+        "level": 3,
+        "text": "Instrucciones de Uso"
+      }
+    ],
+    "aria_live_regions": 1,
+    "images_with_alt": {
+      "total": 0,
+      "with_alt": 0
+    },
+    "form_labels": {
+      "total": 0,
+      "labeled": 0
+    },
+    "buttons_accessible": {
+      "total": 8,
+      "accessible": 8
+    },
+    "issues": []
+  }
+}

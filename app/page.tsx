@@ -16,13 +16,12 @@ const CameraSelector = dynamic(() => import('../components/CameraSelector'), { s
 
 export default function HomePage() {
   return (
-    <main id="main-content" tabIndex={-1} className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8 relative focus:outline-none">
+    <main id="main-content" tabIndex={-1} className="flex min-h-screen flex-col items-start justify-between p-4 md:p-8 relative focus:outline-none">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 w-full">
         <h1 className="text-3xl font-bold mb-2">Sistema de Asistencia Visual</h1>
         <p className="text-gray-400">
-          Sistema de asistencia visual para entornos de oficina. Detecta objetos en tiempo real usando YOLOv8
-          y estimación de profundidad con MiDaS, proporcionando retroalimentación auditiva para personas con discapacidad visual.
+          Sistema de asistencia visual para entornos de oficina. Detecta objetos en tiempo real proporcionando retroalimentación auditiva para personas con discapacidad visual.
         </p>
       </div>
 
@@ -42,7 +41,7 @@ export default function HomePage() {
       </div>
 
       {/* Footer info */}
-      <div id="instrucciones-uso" tabIndex={-1} className="mt-8 p-4 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <div id="instrucciones-uso" tabIndex={-1} className="mt-8 p-4 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full">
         <h3 className="font-semibold mb-2">Instrucciones de Uso</h3>
         <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
           <li><strong>Selecciona una cámara:</strong> Presiona <kbd className="px-1 bg-gray-700 rounded">C</kbd> para ir a la lista de cámaras. Usa las flechas ↑↓ para navegar y <kbd className="px-1 bg-gray-700 rounded">Enter</kbd> para seleccionar.</li>

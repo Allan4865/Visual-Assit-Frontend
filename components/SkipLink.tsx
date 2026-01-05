@@ -3,7 +3,7 @@
 import { useAccessibility } from '@/context/AccessibilityContext';
 
 export default function SkipLink() {
-    const { speak: speakContext, isScreenReaderOptimized } = useAccessibility();
+    const { isScreenReaderOptimized } = useAccessibility();
 
     // Direct speak function that works even if context isn't fully ready
     const speak = (message: string) => {
@@ -18,8 +18,7 @@ export default function SkipLink() {
         }
     };
 
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
+    const navigateToInstructions = () => {
         const target = document.getElementById('instrucciones-uso');
         if (target) {
             target.focus();
@@ -41,11 +40,26 @@ export default function SkipLink() {
         }
     };
 
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateToInstructions();
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            navigateToInstructions();
+        }
+    };
+
     return (
         <a
             href="#instrucciones-uso"
             className="skip-link"
             onClick={handleClick}
+            onKeyDown={handleKeyDown}
             onFocus={() => speak('¿Necesitas ayuda para usar esta página? Presiona Enter para escuchar las instrucciones.')}
         >
             ¿Necesitas ayuda para usar esta página?
