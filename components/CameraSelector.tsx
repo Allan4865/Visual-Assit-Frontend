@@ -512,7 +512,7 @@ export default function CameraSelector() {
             onFocus={() => {
               const camera = availableCameras[focusedCameraIndex];
               if (camera) {
-                speak(`Lista de cámaras. ${camera.name}. ${selectedCamera?.id === camera.id ? 'Seleccionada' : 'No seleccionada'}. ${focusedCameraIndex + 1} de ${availableCameras.length}. Usa flechas arriba y abajo para navegar.`);
+                speak(`Lista de cámaras. ${camera.name}. ${selectedCamera?.id === camera.id ? 'Seleccionada' : 'No seleccionada'}. ${focusedCameraIndex + 1} de ${availableCameras.length}. Usa flechas arriba y abajo para navegar y Enter para seleccionar.`);
               }
             }}
           >

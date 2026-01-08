@@ -28,12 +28,12 @@ export default function SkipLink() {
             setTimeout(() => {
                 const instructionsText = `
           Instrucciones de Uso.
-          1. Selecciona una cámara: Presiona C para ir a la lista de cámaras. Usa flechas arriba y abajo para navegar y Enter para seleccionar.
-          2. Agregar cámara: Presiona D para ir a los botones de descubrir.
-          3. Iniciar detección: Con una cámara seleccionada, presiona Espacio o Enter para iniciar o detener la detección.
-          4. Alertas de voz: El sistema anuncia los objetos detectados. Usa M para silenciar o activar el audio.
-          5. Modo texto: Presiona T para alternar entre video y lista de texto.
-          6. Accesibilidad: Presiona A para abrir el panel de accesibilidad.
+          1. Selecciona una cámara: Presiona C para ir a la lista de cámaras. Usa las flechas arriba y abajo para navegar y Enter para seleccionar.
+          2. Agregar cámara: Presiona D para ir a los botones de descubrir. Puedes agregar cámaras locales o remotas RTSP.
+          3. Iniciar detección: Con una cámara seleccionada, presiona Espacio o Enter para iniciar o detener la detección de objetos.
+          4. Alertas de voz: El sistema anuncia los objetos detectados y su distancia aproximada: cerca, lejos, o muy cerca. Usa M para silenciar o activar el audio de detecciones.
+          5. Modo texto: Presiona T para alternar entre video y lista de texto de detecciones.
+          6. Accesibilidad: Presiona A para abrir el panel de accesibilidad donde puedes activar alto contraste, cambiar tamaño de texto, y activar o desactivar alertas por voz.
         `;
                 speak(instructionsText);
             }, 300);

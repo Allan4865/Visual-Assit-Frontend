@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAccessibility } from '@/context/AccessibilityContext';
 
 export default function AccessibilitySettings() {
@@ -14,6 +14,7 @@ export default function AccessibilitySettings() {
         speak
     } = useAccessibility();
     const [isOpen, setIsOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
 
     // Keyboard shortcut for accessibility panel
     useEffect(() => {
@@ -29,8 +30,7 @@ export default function AccessibilitySettings() {
                 setIsOpen(prev => {
                     const newState = !prev;
                     const message = newState
-                        ? "Panel de accesibilidad abierto"
-                        : "Panel de accesibilidad cerrado";
+                        ? "Panel de accesibilidad abierto, navega con Tab y presiona Enter para confirmar" : "Panel de accesibilidad cerrado";
                     speak(message, true);
                     return newState;
                 });
@@ -40,6 +40,16 @@ export default function AccessibilitySettings() {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [speak]);
+
+    // Focus the panel when it opens for accessibility
+    useEffect(() => {
+        if (isOpen && panelRef.current) {
+            // Small delay to ensure panel is rendered
+            setTimeout(() => {
+                panelRef.current?.focus();
+            }, 100);
+        }
+    }, [isOpen]);
 
     return (
         <div className="fixed bottom-4 right-4 z-[10000]">
@@ -71,8 +81,10 @@ export default function AccessibilitySettings() {
             {/* Panel */}
             {isOpen && (
                 <div
+                    ref={panelRef}
+                    tabIndex={-1}
                     className={`
-            absolute bottom-16 right-0 w-80 p-4 rounded-lg shadow-xl border-2
+            absolute bottom-16 right-0 w-80 p-4 rounded-lg shadow-xl border-2 focus:outline-none focus:ring-2 focus:ring-blue-400
             ${theme === 'high-contrast'
                             ? 'bg-black border-white text-white'
                             : 'bg-gray-800 border-gray-700 text-gray-100'}
@@ -154,8 +166,14 @@ export default function AccessibilitySettings() {
                                     synth.speak(utter);
                                 }}
                                 onFocus={() => {
-                                    // No anunciar al hacer foco para evitar doble anuncio con onClick
-                                    // El estado se anuncia al hacer clic
+                                    // Anunciar estado actual usando speechSynthesis directamente
+                                    // para que funcione incluso si las alertas por voz están desactivadas
+                                    const synth = window.speechSynthesis;
+                                    const message = `Modo Accesibilidad Voz: ${isScreenReaderOptimized ? 'Activado' : 'Desactivado'}`;
+                                    const utter = new SpeechSynthesisUtterance(message);
+                                    utter.lang = 'es-ES';
+                                    utter.rate = 1.2;
+                                    synth.speak(utter);
                                 }}
                                 className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-offset-2 ${isScreenReaderOptimized
                                     ? 'bg-green-500 focus:ring-green-400'
